@@ -3210,60 +3210,838 @@
     stroke-width: 2.8 !important;
   }
 
-  /* === MOBILE PHONE & iOS HOME-SCREEN OPTIMIZATION === */
-  @media (max-width: 760px) {
-    html, body {
-      overflow-x: hidden;
-      -webkit-text-size-adjust: 100%;
-    }
-    .page-frame {
-      padding: 8px 8px 56px !important;
-    }
-    .masthead {
-      padding: 14px 12px !important;
-      gap: 10px !important;
-    }
-    .masthead-title {
-      font-size: clamp(1.55rem, 7.2vw, 2.3rem) !important;
-      line-height: 1.04 !important;
-    }
-    .masthead-sub {
-      font-size: 0.84rem !important;
-    }
-    .mode-nav {
-      display: grid !important;
-      grid-template-columns: 1fr 1fr !important;
-      gap: 6px !important;
-    }
-    .mode-tab {
-      padding: 10px 8px !important;
-      font-size: 0.72rem !important;
-      text-align: center !important;
-      justify-content: center !important;
-    }
-    .filter-bar, .peel-layer-bar {
-      padding: 8px 10px !important;
-      gap: 6px !important;
-      overflow-x: auto !important;
-      -webkit-overflow-scrolling: touch;
-    }
-    .region-cards-grid {
-      grid-template-columns: 1fr !important;
-    }
-    .mono-header {
-      padding: 14px 12px !important;
-    }
-    .mono-title {
-      font-size: 1.35rem !important;
-    }
-    .nations-strip {
-      grid-template-columns: 1fr 1fr !important;
-    }
-    .concordance-table-wrap {
-      overflow-x: auto !important;
-      -webkit-overflow-scrolling: touch;
-    }
+  
+
+
+
+
+
+
+
+
+
+
+/* ============================================================================
+   MOBILE UNIGRID OVERHAUL & INTERACTIVE 3D EXPLODING MYOLOGY STAGE (2025)
+   ============================================================================ */
+
+/* --- 3D Stage Toolbar & Viewport Styling (Desktop + Mobile) --- */
+.stage-view-mode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 14px;
+  background: #141010;
+  color: #F3ECE1;
+  border-bottom: 2px solid #FFD400;
+}
+.stage-view-mode-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.stage-view-btn {
+  appearance: none;
+  border: 1.5px solid #5A504C;
+  background: #231C1C;
+  color: #E8DFD1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 7px 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.stage-view-btn:hover {
+  border-color: #FFD400;
+  color: #FFFFFF;
+}
+.stage-view-btn.active {
+  background: #FFD400;
+  color: #141010;
+  border-color: #FFD400;
+  box-shadow: 0 0 0 2px rgba(255,212,0,0.25);
+}
+.stage-2d-zoom-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.zoom-pill-btn {
+  appearance: none;
+  border: 1px solid #4A403C;
+  background: #1E1818;
+  color: #D8CFC2;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 5px 9px;
+  cursor: pointer;
+}
+.zoom-pill-btn.active {
+  background: #C83E4D;
+  color: #FFFFFF;
+  border-color: #FFD400;
+}
+
+/* --- 3D Dissection Stage Container --- */
+#stage3DWrapper {
+  display: none;
+  background: #120E0F;
+  border-top: 1px solid #2D2424;
+  border-bottom: 2px solid #141010;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+}
+#stage3DWrapper.active {
+  display: block;
+}
+.stage3d-controls-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #1B1516;
+  border-bottom: 1px solid #352B2C;
+  color: #F3ECE1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+.stage3d-slider-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 280px;
+}
+.stage3d-slider-label {
+  color: #FFD400;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.stage3d-explode-slider {
+  flex: 1;
+  min-width: 110px;
+  accent-color: #FFD400;
+  height: 6px;
+  cursor: pointer;
+}
+.stage3d-btn-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.stage3d-ctrl-btn {
+  appearance: none;
+  background: #282021;
+  color: #F3ECE1;
+  border: 1px solid #524446;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+.stage3d-ctrl-btn:hover {
+  border-color: #FFD400;
+  color: #FFD400;
+}
+.stage3d-ctrl-btn.primary {
+  background: #C83E4D;
+  color: #FFFFFF;
+  border-color: #FFD400;
+}
+.stage3d-ctrl-btn.primary.playing {
+  background: #FFD400;
+  color: #141010;
+}
+.stage3d-ctrl-btn.gold {
+  background: #FFD400;
+  color: #141010;
+  border-color: #FFD400;
+}
+.stage3d-canvas-box {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: radial-gradient(circle at 50% 45%, #261C1E 0%, #120D0E 78%);
+  overflow: hidden;
+  touch-action: none;
+}
+#myologia3DCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+#myologia3DCanvas:active {
+  cursor: grabbing;
+}
+.stage3d-hud-overlay {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  gap: 8px;
+}
+.stage3d-hud-badge {
+  background: rgba(20, 16, 16, 0.86);
+  border: 1px solid #FFD400;
+  color: #F3ECE1;
+  padding: 6px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  line-height: 1.45;
+  max-width: 68%;
+  backdrop-filter: blur(4px);
+}
+.stage3d-hud-badge strong {
+  color: #FFD400;
+  display: block;
+  font-size: 11px;
+}
+.stage3d-cam-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #181213;
+  border-top: 1px solid #352B2C;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #BFB3A4;
+}
+.stage3d-cam-presets {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+/* --- 2D Pan/Zoom Mode on Stage Canvas --- */
+.stage-canvas-wrap.zoom-pan-17 {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+.stage-canvas-wrap.zoom-pan-17 svg.bovine-svg {
+  width: 680px !important;
+  min-width: 680px !important;
+  max-width: none !important;
+}
+.stage-canvas-wrap.zoom-pan-23 {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+.stage-canvas-wrap.zoom-pan-23 svg.bovine-svg {
+  width: 940px !important;
+  min-width: 940px !important;
+  max-width: none !important;
+}
+
+/* ============================================================================
+   COMPREHENSIVE MOBILE & PHONE VIEWPORT OVERRIDES (<= 860px)
+   ============================================================================ */
+@media (max-width: 860px) {
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    -webkit-text-size-adjust: 100%;
   }
+
+  /* Strict min-width: 0 + block-clamping so nowrap horizontal scroll strips NEVER stretch the page wider than 390px */
+  .atlas-container,
+  .atlas-container *,
+  .skin-switcher-bar,
+  .nav-ribbon,
+  .mode-panel,
+  .filter-bar,
+  .atlas-stage-grid,
+  .anatomy-canvas-card,
+  .specimen-index-card,
+  .peel-toolbar,
+  .stage-view-mode-bar,
+  #stage3DWrapper,
+  .specimen-monograph,
+  .collagen-phase-card,
+  .transverse-planes-card {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav-ribbon,
+  .filter-bar,
+  .atlas-stage-grid,
+  .anatomy-canvas-card,
+  .peel-toolbar {
+    display: block !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .chip-btn, .chip, .peel-btn, .traj-btn, .mode-btn, .skin-btn, .stage3d-ctrl-btn {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .chip-btn {
+    padding: 5px 10px !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+  }
+  .fg-label, .peel-label {
+    font-size: 9.5px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  /* Hide verbose prose banner above stage on mobile to bring the 2D/3D stage higher up */
+  .peel-status-banner {
+    display: none !important;
+  }
+
+  /* 1. Full-bleed container with tight 8px gutter */
+  .atlas-container {
+    padding: 0 8px 44px 8px !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  /* 2. Compact Top Volume Switcher + Single-Row Swipeable Skin Switcher */
+  .skin-switcher-bar {
+    padding: 6px 10px !important;
+    margin-bottom: 8px !important;
+    gap: 6px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+  }
+  .skin-switcher-title {
+    font-size: 9.5px !important;
+    flex-shrink: 0;
+  }
+  #activeSkinLabel {
+    display: none !important;
+  }
+  .skin-switcher-btns {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    gap: 5px !important;
+    width: 100%;
+    padding-bottom: 2px;
+  }
+  .skin-btn {
+    padding: 5px 9px !important;
+    font-size: 9.5px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+  }
+
+  /* 3. Fix Barney/Rams/Bacon/Vignelli & Swiss Mastheads (!important grid overrides) */
+  body[data-skin="barney_rams"] #barneyRamsMasthead,
+  body[data-skin="lab"] #swissMasthead {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
+    border-top-width: 4px !important;
+    border-bottom-width: 3px !important;
+    margin-bottom: 10px !important;
+  }
+  body[data-skin="barney_rams"] .br-cell-left,
+  body[data-skin="lab"] .swiss-cell-left {
+    border-right: none !important;
+    border-bottom: 1px solid #141010 !important;
+    padding: 8px 12px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+  body[data-skin="barney_rams"] .br-model-code,
+  body[data-skin="lab"] .swiss-index-num {
+    font-size: 18px !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+  }
+  body[data-skin="barney_rams"] .br-model-sub,
+  body[data-skin="lab"] .swiss-meta-stack {
+    display: none !important;
+  }
+  body[data-skin="barney_rams"] .br-cell-center,
+  body[data-skin="lab"] .swiss-mast-title {
+    border-right: none !important;
+    border-bottom: 1px solid #141010 !important;
+    padding: 11px 12px !important;
+  }
+  body[data-skin="barney_rams"] .br-overline,
+  body[data-skin="lab"] .swiss-overline {
+    font-size: 9px !important;
+    letter-spacing: 0.08em !important;
+    margin-bottom: 4px !important;
+    line-height: 1.3 !important;
+  }
+  body[data-skin="barney_rams"] .br-h1,
+  body[data-skin="lab"] .swiss-h1 {
+    font-size: 22px !important;
+    line-height: 1.04 !important;
+    letter-spacing: -0.025em !important;
+    margin-bottom: 6px !important;
+    word-break: break-word;
+  }
+  body[data-skin="barney_rams"] .mono-title,
+  .mono-title {
+    font-size: 20px !important;
+    line-height: 1.1 !important;
+  }
+  body[data-skin="barney_rams"] .br-desc,
+  body[data-skin="lab"] .swiss-desc {
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  body[data-skin="barney_rams"] .br-cell-right,
+  body[data-skin="lab"] .swiss-cell-right {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+  body[data-skin="barney_rams"] .br-telemetry-row,
+  body[data-skin="lab"] .swiss-telemetry-row {
+    padding: 6px 10px !important;
+    font-size: 9.5px !important;
+    border-right: 1px solid #141010;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 2px !important;
+  }
+
+  /* Archival Masthead on Mobile */
+  .masthead {
+    padding: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .masthead-inner {
+    padding: 12px 10px !important;
+  }
+  .masthead-meta-row {
+    font-size: 9px !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    margin-bottom: 8px !important;
+  }
+  .masthead h1 {
+    font-size: 22px !important;
+    letter-spacing: 0.05em !important;
+  }
+  .masthead-sub {
+    font-size: 12.5px !important;
+    margin-bottom: 8px !important;
+  }
+  .masthead-colophon {
+    gap: 8px !important;
+    font-size: 9.5px !important;
+  }
+
+  /* 4. Compact Sticky Navigation Ribbon (Single Horizontal Scroll Row + Full-Width Search) */
+  .nav-ribbon {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 250 !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 0 !important;
+    margin-bottom: 10px !important;
+  }
+  .mode-tabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100% !important;
+    border-bottom: 1px solid #141010;
+  }
+  .mode-btn {
+    padding: 9px 11px !important;
+    font-size: 10.5px !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  .search-wrap {
+    min-width: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border: none !important;
+    padding: 5px 10px !important;
+  }
+  .search-input {
+    font-size: 12px !important;
+  }
+
+  /* 5. Compact Swipeable Filter Bar */
+  .filter-bar {
+    padding: 8px 10px !important;
+    gap: 6px !important;
+    margin-bottom: 10px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .filter-group {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    gap: 5px !important;
+    width: 100% !important;
+    padding-bottom: 2px;
+  }
+  .filter-label {
+    font-size: 9.5px !important;
+    flex-shrink: 0;
+  }
+  .chip {
+    padding: 5px 9px !important;
+    font-size: 10px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* 6. Dissection Stage FIRST, Specimen Register SECOND */
+  .atlas-stage-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-bottom: 14px !important;
+  }
+  .anatomy-canvas-card {
+    order: 1 !important;
+    width: 100% !important;
+  }
+  .specimen-index-card {
+    order: 2 !important;
+    width: 100% !important;
+    height: 270px !important;
+  }
+  .card-subhead {
+    padding: 8px 10px !important;
+    font-size: 10px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+
+  /* Peel toolbar as clean swipeable rows on mobile */
+  .peel-toolbar {
+    padding: 7px 10px !important;
+    gap: 6px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .peel-group {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    gap: 5px !important;
+    width: 100% !important;
+    padding-bottom: 2px;
+  }
+  .peel-btn {
+    padding: 5px 9px !important;
+    font-size: 10px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  .peel-status-banner {
+    padding: 6px 10px !important;
+    font-size: 10.5px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+  .stage-view-mode-bar {
+    padding: 8px 10px !important;
+  }
+  .stage-view-btn {
+    font-size: 10px !important;
+    padding: 6px 10px !important;
+  }
+  .stage-canvas-wrap {
+    padding: 8px 6px 6px 6px !important;
+  }
+  .svg-caption-top {
+    font-size: 8.5px !important;
+    margin-bottom: 4px !important;
+  }
+  .svg-caption-top span:nth-child(2) {
+    display: none !important;
+  }
+  .stage3d-canvas-box {
+    height: 390px !important;
+  }
+  .stage3d-controls-top {
+    padding: 8px 10px !important;
+    gap: 8px !important;
+  }
+  .stage3d-hud-badge {
+    max-width: 100% !important;
+    font-size: 9.5px !important;
+    padding: 5px 8px !important;
+  }
+  .stage-summary-bar {
+    padding: 10px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  .summary-latin {
+    font-size: 16px !important;
+  }
+  .summary-Vernacular {
+    font-size: 11px !important;
+  }
+  .summary-Badges {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+
+  /* 7. Specimen Monograph Folio on Mobile */
+  .specimen-monograph {
+    padding: 14px 12px !important;
+    margin-bottom: 16px !important;
+  }
+  .mono-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding-bottom: 12px !important;
+  }
+  .mono-latin {
+    font-size: 21px !important;
+    line-height: 1.12 !important;
+  }
+  .mono-subtitle {
+    font-size: 12px !important;
+  }
+  .mono-nav-btns {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100% !important;
+    gap: 6px !important;
+  }
+  .mono-nav-btns .btn-action:last-child {
+    grid-column: 1 / -1;
+  }
+  .btn-action {
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 8px 10px !important;
+    font-size: 10.5px !important;
+  }
+  .mono-specs-strip {
+    grid-template-columns: 1fr !important;
+    margin: 12px 0 16px 0 !important;
+  }
+  .spec-card {
+    border-right: none !important;
+    border-bottom: 1px solid #141010 !important;
+    padding: 10px 12px !important;
+  }
+  .spec-card:last-child {
+    border-bottom: none !important;
+  }
+  .region-cards-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 16px !important;
+  }
+  .region-card {
+    padding: 10px !important;
+  }
+  .rc-primary-cut {
+    font-size: 14px !important;
+  }
+  .mono-narrative-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  .narrative-box {
+    padding: 12px !important;
+    border-right: none !important;
+    border-bottom: 1px solid #141010 !important;
+  }
+  .narrative-box:last-child {
+    border-bottom: none !important;
+  }
+  .mono-plate-banner {
+    grid-template-columns: 1fr !important;
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+  .plate-thumb-box {
+    height: 150px !important;
+  }
+
+  /* 8. Fix Fig. 2 (#brThermalVitrineDeck & #collagenPhaseSection) on Mobile */
+  body[data-skin="barney_rams"] #brThermalVitrineDeck {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
+  }
+  body[data-skin="barney_rams"] .br-vitrine-plate-box {
+    border-right: none !important;
+    border-bottom: 1px solid #141010 !important;
+    padding: 10px !important;
+  }
+  body[data-skin="barney_rams"] .br-vitrine-cells-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+  body[data-skin="barney_rams"] .br-vitrine-cell {
+    padding: 10px !important;
+    border-bottom: 1px solid #141010 !important;
+  }
+  body[data-skin="barney_rams"] .br-vitrine-temp {
+    font-size: 17px !important;
+  }
+  .phase-controls-bar {
+    padding: 10px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+  .temp-slider-group {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  .temp-readout-pill {
+    font-size: 13px !important;
+    padding: 5px 10px !important;
+  }
+  .traj-btn-group {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    gap: 5px !important;
+    padding-bottom: 2px;
+  }
+  .traj-btn {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    font-size: 10px !important;
+    padding: 5px 9px !important;
+  }
+  .phase-readout-bar {
+    grid-template-columns: 1fr !important;
+  }
+  .phase-ro-box {
+    border-right: none !important;
+    border-bottom: 1px solid #141010 !important;
+    padding: 10px 12px !important;
+  }
+  .phase-canvas-wrap {
+    padding: 8px 6px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .phase-svg {
+    width: 620px !important;
+    max-width: none !important;
+  }
+
+  /* 9. Fix Fig. 3 (Transverse Cross-Sections) on Mobile */
+  .planes-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .plane-column {
+    border-right: none !important;
+    border-bottom: 2px solid #141010 !important;
+    padding: 12px 10px !important;
+  }
+  .plane-footer-bar {
+    padding: 10px !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sig-cut-pill {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* 10. Mode II (Concordance), Mode III (Schools), Mode IV (Plates) on Mobile */
+  .concordance-toolbar {
+    padding: 10px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+  .pair-selector {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+  .select-styled {
+    flex: 1 1 130px !important;
+    font-size: 11px !important;
+    padding: 6px 8px !important;
+  }
+  .concordance-table.pairwise-mobile {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .concordance-table.pairwise-mobile th,
+  .concordance-table.pairwise-mobile td {
+    padding: 8px 7px !important;
+    font-size: 11px !important;
+  }
+  .schools-grid,
+  .tafeln-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  .school-card,
+  .tafel-folio {
+    padding: 14px 12px !important;
+  }
+  .school-specs {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .region-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
 
 </style>
 </head>
@@ -3478,6 +4256,86 @@
         <div class="peel-status-banner">
           <span class="peel-status-tag" id="peelBannerTag">STRATUM COMPOSITA · ALL 26 SPECIMENS</span>
           <span id="peelBannerDesc">Showing both the outer locomotive mantle and deep visceral/sub-scapular suspension muscles together. Click "Deep Core &amp; Skeleton Peel" above to reflect the shoulder blade and outer flank.</span>
+        </div>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <!-- 2D LITHOGRAPH vs. 3D INTERACTIVE EXPLODING MYOLOGY STAGE BAR -->
+        <div class="stage-view-mode-bar">
+          <div class="stage-view-mode-btns">
+            <button type="button" class="stage-view-btn active" id="btnView2D" onclick="setStageDimensionMode('2D')">
+              📐 2D Anatomical Plate
+            </button>
+            <button type="button" class="stage-view-btn" id="btnView3D" onclick="setStageDimensionMode('3D')">
+              🧊 3D Interactive Peel &amp; Explode
+            </button>
+          </div>
+          <div class="stage-2d-zoom-pills" id="stage2DZoomBar">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#BFB3A4;margin-right:3px;">STAGE ZOOM:</span>
+            <button type="button" class="zoom-pill-btn active" data-zoom="1" onclick="setStage2DZoom(1)">1× Fit</button>
+            <button type="button" class="zoom-pill-btn" data-zoom="17" onclick="setStage2DZoom(17)">1.7× Pan</button>
+            <button type="button" class="zoom-pill-btn" data-zoom="23" onclick="setStage2DZoom(23)">2.3× Detail</button>
+          </div>
+        </div>
+
+        <!-- INTERACTIVE 3D EXPLODING / PEELABLE MYOLOGY VIEWPORT -->
+        <div id="stage3DWrapper">
+          <div class="stage3d-controls-top">
+            <div class="stage3d-slider-group">
+              <span class="stage3d-slider-label">Explode / Peel: <span id="explodePctReadout">0%</span></span>
+              <input type="range" id="explode3DSlider" class="stage3d-explode-slider" min="0" max="100" value="0" oninput="onExplodeSliderInput(this.value)">
+            </div>
+            <div class="stage3d-btn-row">
+              <button type="button" class="stage3d-ctrl-btn primary" id="btnAnimatePeel3D" onclick="toggleAutoPeel3D()">
+                ▶ Animate Peel
+              </button>
+              <button type="button" class="stage3d-ctrl-btn gold" id="btnPullSelected3D" onclick="togglePullSelectedMuscle3D()">
+                🧲 Pull Selected Muscle
+              </button>
+              <button type="button" class="stage3d-ctrl-btn" onclick="peelOuterLayer3D()">
+                Peel Outer Mantle
+              </button>
+              <button type="button" class="stage3d-ctrl-btn" onclick="resetDissection3D()">
+                ↺ Reset Carcass
+              </button>
+            </div>
+          </div>
+
+          <div class="stage3d-canvas-box" id="stage3DCanvasBox">
+            <canvas id="myologia3DCanvas"></canvas>
+            <div class="stage3d-hud-overlay">
+              <div class="stage3d-hud-badge" id="stage3DHudLeft">
+                <strong id="hud3DTitle">3D VOLUMETRIC MYOLOGY &amp; SKELETAL RIG</strong>
+                <span id="hud3DSub">Drag to orbit 360° · Tap any muscle to pull it off the skeleton · Scrub Explode slider to separate layers</span>
+              </div>
+              <div class="stage3d-hud-badge" id="stage3DHudRight" style="text-align:right;">
+                <strong id="hud3DSelectedCode">I.01</strong>
+                <span id="hud3DSelectedState">DOCKED ON SKELETON</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stage3d-cam-bar">
+            <div class="stage3d-cam-presets">
+              <span>VIEWPOINT:</span>
+              <button type="button" class="stage3d-ctrl-btn" onclick="setCameraPreset3D(-0.48, 0.24, 1.0)">3/4 Isometric</button>
+              <button type="button" class="stage3d-ctrl-btn" onclick="setCameraPreset3D(0.0, 0.05, 1.0)">Pure Lateral</button>
+              <button type="button" class="stage3d-ctrl-btn" onclick="setCameraPreset3D(-1.22, 0.18, 1.08)">Cranial (Shoulder/Seam)</button>
+              <button type="button" class="stage3d-ctrl-btn" onclick="setCameraPreset3D(0.0, 1.15, 1.05)">Dorsal (Saddle/Loin)</button>
+              <button type="button" class="stage3d-ctrl-btn" onclick="setCameraPreset3D(1.18, 0.20, 1.08)">Caudal (Pelvis/Ham)</button>
+            </div>
+            <div class="stage3d-cam-presets">
+              <button type="button" class="stage3d-ctrl-btn" id="btnToggleFarFlank3D" onclick="toggleFarFlank3D()"> Bilateral Flank: ON</button>
+              <button type="button" class="stage3d-ctrl-btn" id="btnToggleTethers3D" onclick="toggleTethers3D()">Skeletal Tethers: ON</button>
+            </div>
+          </div>
         </div>
 
         <div class="stage-canvas-wrap">
@@ -7298,6 +8156,1154 @@ renderTafeln();
   if (typeof syncStageIllustration === "function") syncStageIllustration();
   if (typeof updateReillustratedPlates === "function") updateReillustratedPlates();
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ============================================================================
+// MOBILE UX & INTERACTIVE 3D VOLUMETRIC EXPLODING MYOLOGY ENGINE
+// ============================================================================
+let stageDimensionMode = "2D"; // "2D" | "3D"
+let explode3DPct = 0;          // 0..100
+let autoPeelPlaying = false;
+let autoPeelDir = 1;
+let pulledCutIds3D = new Set();
+let cutPullProgress3D = {};    // id -> 0..1 animated float
+let showFarFlank3D = true;
+let showTethers3D = true;
+let cam3D = {
+  yaw: -0.46,
+  pitch: 0.22,
+  zoom: 1.0,
+  targetYaw: -0.46,
+  targetPitch: 0.22,
+  targetZoom: 1.0,
+  panX: 0,
+  panY: 0
+};
+let meshes3D = [];
+let skeleton3D = null;
+let animFrame3D = null;
+let screenPolys3D = []; // for click/tap hit testing in 3D
+
+function setStage2DZoom(level) {
+  const wrap = document.querySelector(".stage-canvas-wrap");
+  if (!wrap) return;
+  wrap.classList.remove("zoom-pan-17", "zoom-pan-23");
+  if (level === 17) wrap.classList.add("zoom-pan-17");
+  if (level === 23) wrap.classList.add("zoom-pan-23");
+  document.querySelectorAll("#stage2DZoomBar .zoom-pill-btn").forEach(btn => {
+    btn.classList.toggle("active", Number(btn.dataset.zoom) === level);
+  });
+}
+
+function setStageDimensionMode(mode) {
+  stageDimensionMode = mode;
+  const wrap3D = document.getElementById("stage3DWrapper");
+  const wrap2D = document.querySelector(".stage-canvas-wrap");
+  const zoomBar2D = document.getElementById("stage2DZoomBar");
+  const btn2D = document.getElementById("btnView2D");
+  const btn3D = document.getElementById("btnView3D");
+
+  if (btn2D) btn2D.classList.toggle("active", mode === "2D");
+  if (btn3D) btn3D.classList.toggle("active", mode === "3D");
+
+  if (mode === "3D") {
+    if (wrap3D) wrap3D.classList.add("active");
+    if (wrap2D) wrap2D.style.display = "none";
+    if (zoomBar2D) zoomBar2D.style.display = "none";
+    initMyologia3DEngine();
+    update3DHud();
+  } else {
+    if (wrap3D) wrap3D.classList.remove("active");
+    if (wrap2D) wrap2D.style.display = "";
+    if (zoomBar2D) zoomBar2D.style.display = "";
+  }
+}
+
+// Parse an SVG path string (M, L, C, Q, Z) into a dense 2D polygon in 920x500 space
+function sampleSvgPathToPolygon(pathStr) {
+  if (!pathStr) return [];
+  const tokens = pathStr.match(/[MLCQZmlcqz]|-?\d+(?:\.\d+)?/g) || [];
+  let idx = 0;
+  let cx = 0, cy = 0;
+  const pts = [];
+  let cmd = "M";
+
+  function nextNum() {
+    return parseFloat(tokens[idx++]);
+  }
+
+  while (idx < tokens.length) {
+    const t = tokens[idx];
+    if (/^[MLCQZmlcqz]$/.test(t)) {
+      cmd = t.toUpperCase();
+      idx++;
+      if (cmd === "Z") break;
+      continue;
+    }
+    if (cmd === "M" || cmd === "L") {
+      cx = nextNum();
+      cy = nextNum();
+      pts.push([cx, cy]);
+      cmd = "L";
+    } else if (cmd === "C") {
+      const x1 = nextNum(), y1 = nextNum();
+      const x2 = nextNum(), y2 = nextNum();
+      const x3 = nextNum(), y3 = nextNum();
+      const x0 = cx, y0 = cy;
+      const steps = 5;
+      for (let s = 1; s <= steps; s++) {
+        const u = s / steps;
+        const inv = 1 - u;
+        const px = inv*inv*inv*x0 + 3*inv*inv*u*x1 + 3*inv*u*u*x2 + u*u*u*x3;
+        const py = inv*inv*inv*y0 + 3*inv*inv*u*y1 + 3*inv*u*u*y2 + u*u*u*y3;
+        pts.push([px, py]);
+      }
+      cx = x3; cy = y3;
+    } else if (cmd === "Q") {
+      const x1 = nextNum(), y1 = nextNum();
+      const x2 = nextNum(), y2 = nextNum();
+      const x0 = cx, y0 = cy;
+      const steps = 4;
+      for (let s = 1; s <= steps; s++) {
+        const u = s / steps;
+        const inv = 1 - u;
+        const px = inv*inv*x0 + 2*inv*u*x1 + u*u*x2;
+        const py = inv*inv*y0 + 2*inv*u*y1 + u*u*y2;
+        pts.push([px, py]);
+      }
+      cx = x2; cy = y2;
+    } else {
+      idx++;
+    }
+  }
+  // Deduplicate close vertices
+  const clean = [];
+  for (const p of pts) {
+    if (!clean.length || Math.hypot(p[0]-clean[clean.length-1][0], p[1]-clean[clean.length-1][1]) > 3.5) {
+      clean.push(p);
+    }
+  }
+  return clean;
+}
+
+function buildSkeleton3D() {
+  const isPorcine = document.title.toLowerCase().includes("porcina");
+  const spinePts = [];
+  // Cranial to Caudal vertebral arch in 3D space (X: -320..+300, Y: dorsal negative, Z: 0)
+  const spine2D = isPorcine
+    ? [
+        [-275, -22], [-235, -48], [-185, -72], [-125, -88], [-55, -96],
+        [15, -96], [85, -92], [155, -84], [215, -72], [268, -50], [302, -18]
+      ]
+    : [
+        [-295, -35], [-245, -78], [-185, -108], [-115, -102], [-45, -94],
+        [25, -92], [95, -92], [165, -90], [230, -82], [280, -54], [308, 12]
+      ];
+
+  for (let i = 0; i < spine2D.length; i++) {
+    spinePts.push({ x: spine2D[i][0], y: spine2D[i][1], z: 0 });
+  }
+
+  // 14 pairs of curved 3D thoracic ribs sweeping out laterally (+Z and -Z)
+  const ribs = [];
+  const numRibs = 13;
+  for (let r = 0; r < numRibs; r++) {
+    const frac = r / (numRibs - 1);
+    const rx = -148 + frac * 195;
+    const ryTop = -88 + Math.sin(frac * Math.PI) * -8;
+    const ribLen = 112 + Math.sin(frac * Math.PI) * 34;
+    const ribBellyZ = 44 + Math.sin(frac * Math.PI) * 18;
+    const sweepBack = 14 + frac * 18;
+    for (const side of [1, -1]) {
+      const arc = [];
+      const segs = 8;
+      for (let s = 0; s <= segs; s++) {
+        const u = s / segs;
+        const x = rx + Math.sin(u * Math.PI * 0.85) * sweepBack;
+        const y = ryTop + u * ribLen;
+        const z = side * Math.sin(u * Math.PI * 0.82) * ribBellyZ;
+        arc.push({ x, y, z });
+      }
+      ribs.push({ side, index: r + 1, arc });
+    }
+  }
+
+  // Scapula blade (retracts outward when peel increases)
+  const scapulaPoly = [
+    { x: -195, y: -76, z: 48 },
+    { x: -128, y: -84, z: 48 },
+    { x: -148, y: 18,  z: 44 },
+    { x: -188, y: 12,  z: 44 }
+  ];
+
+  // Pelvis / Ilium-Ischium
+  const pelvisPoly = [
+    { x: 145, y: -78, z: 34 },
+    { x: 248, y: -62, z: 36 },
+    { x: 262, y: -12, z: 32 },
+    { x: 168, y: -18, z: 30 }
+  ];
+
+  // Skull & Mandible wireframe contour
+  const skullPoly = isPorcine
+    ? [
+        { x: -378, y: 14, z: 0 },
+        { x: -362, y: -22, z: 16 },
+        { x: -308, y: -56, z: 24 },
+        { x: -258, y: -44, z: 28 },
+        { x: -252, y: 28, z: 26 },
+        { x: -318, y: 42, z: 18 }
+      ]
+    : [
+        { x: -385, y: 8, z: 0 },
+        { x: -355, y: -58, z: 20 },
+        { x: -288, y: -76, z: 26 },
+        { x: -252, y: -32, z: 28 },
+        { x: -268, y: 32, z: 24 },
+        { x: -342, y: 38, z: 16 }
+      ];
+
+  // Limb bone axes (Humerus/Radius-Ulna & Femur/Tibia)
+  const limbs = [
+    // Forelimb
+    [
+      { x: -168, y: 14, z: 36 },
+      { x: -196, y: 78, z: 32 },
+      { x: -184, y: 158, z: 26 },
+      { x: -182, y: 205, z: 22 }
+    ],
+    // Hindlimb
+    [
+      { x: 205, y: -16, z: 34 },
+      { x: 176, y: 68, z: 36 },
+      { x: 218, y: 152, z: 28 },
+      { x: 224, y: 206, z: 22 }
+    ]
+  ];
+
+  return { spinePts, ribs, scapulaPoly, pelvisPoly, skullPoly, limbs };
+}
+
+// Anatomically proportioned porcine muscle belly silhouettes & tissue palettes around PIN_COORDS
+const PORCINA_ANATOMY_SHAPES = {
+  masseter_guanciale:              { rx: 34, ry: 24, tilt: 14,  taperL: 0.65, taperR: 0.90, arch: 4,   fill: "#C84B59", stroke: "#4A121B", fiberDeg: 28,  wave: 1 },
+  serratus_coppa:                  { rx: 46, ry: 25, tilt: -14, taperL: 0.78, taperR: 0.85, arch: -5,  fill: "#9E2232", stroke: "#3D0E16", fiberDeg: -22, wave: 3 },
+  rhomboideus_pluma:               { rx: 42, ry: 15, tilt: -22, taperL: 0.85, taperR: 0.38, arch: -4,  fill: "#B32B3B", stroke: "#4A121B", fiberDeg: -24, wave: 3 },
+  subscapularis_secreto:           { rx: 40, ry: 22, tilt: 26,  taperL: 0.75, taperR: 0.75, arch: 3,   fill: "#BC3848", stroke: "#4A121B", fiberDeg: 32,  wave: 3 },
+  supraspinatus_butt:              { rx: 46, ry: 30, tilt: -48, taperL: 0.72, taperR: 0.85, arch: 0,   fill: "#C43B4B", stroke: "#4A121B", fiberDeg: -52, wave: 2 },
+  triceps_picnic:                  { rx: 44, ry: 30, tilt: 52,  taperL: 0.82, taperR: 0.68, arch: 0,   fill: "#B83242", stroke: "#4A121B", fiberDeg: 58,  wave: 2 },
+  brachii_shank_hock:              { rx: 38, ry: 17, tilt: 82,  taperL: 0.90, taperR: 0.52, arch: 0,   fill: "#942130", stroke: "#3A0D14", fiberDeg: 84,  wave: 2 },
+  adipose_lardo_fatback:           { rx: 128,ry: 15, tilt: 1,   taperL: 0.55, taperR: 0.55, arch: -10, fill: "#EDE1CE", stroke: "#8C7A65", fiberDeg: 2,   wave: 1 },
+  spinalis_rib_crown:              { rx: 46, ry: 18, tilt: -4,  taperL: 0.75, taperR: 0.72, arch: -4,  fill: "#AD2636", stroke: "#4A121B", fiberDeg: -6,  wave: 3 },
+  longissimus_thoracis_loin:       { rx: 58, ry: 21, tilt: 1,   taperL: 0.88, taperR: 0.88, arch: -3,  fill: "#D45664", stroke: "#591822", fiberDeg: 8,   wave: 2 },
+  costae_baby_back:                { rx: 52, ry: 26, tilt: 68,  taperL: 0.85, taperR: 0.80, arch: 6,   fill: "#B02C3C", stroke: "#4A121B", fiberDeg: 72,  wave: 3 },
+  longissimus_lumborum_chops:      { rx: 54, ry: 21, tilt: 3,   taperL: 0.88, taperR: 0.82, arch: -2,  fill: "#CF505E", stroke: "#591822", fiberDeg: 6,   wave: 2 },
+  psoas_major_tenderloin:          { rx: 56, ry: 14, tilt: 5,   taperL: 0.48, taperR: 0.35, arch: 2,   fill: "#991B2A", stroke: "#3A0B12", fiberDeg: 5,   wave: 3 },
+  costae_ventrales_spareribs:      { rx: 54, ry: 28, tilt: 62,  taperL: 0.85, taperR: 0.82, arch: 7,   fill: "#A82838", stroke: "#4A121B", fiberDeg: 65,  wave: 3 },
+  stratified_pancetta_belly:       { rx: 74, ry: 25, tilt: 3,   taperL: 0.84, taperR: 0.84, arch: 4,   fill: "#D45C6A", stroke: "#591822", fiberDeg: 4,   wave: 1 },
+  cutaneus_secreto_barriga:        { rx: 54, ry: 18, tilt: -8,  taperL: 0.65, taperR: 0.65, arch: 3,   fill: "#C94857", stroke: "#4A121B", fiberDeg: -10, wave: 1 },
+  diaphragma_onglet_skirt:         { rx: 42, ry: 20, tilt: 44,  taperL: 0.62, taperR: 0.62, arch: 5,   fill: "#851522", stroke: "#33080E", fiberDeg: 46,  wave: 3 },
+  pectoralis_chest_brisket:        { rx: 52, ry: 22, tilt: 16,  taperL: 0.72, taperR: 0.82, arch: 4,   fill: "#AD2A3A", stroke: "#4A121B", fiberDeg: 18,  wave: 1 },
+  transversus_flank_steaks:        { rx: 46, ry: 20, tilt: -18, taperL: 0.68, taperR: 0.72, arch: 2,   fill: "#B83343", stroke: "#4A121B", fiberDeg: -22, wave: 2 },
+  gluteus_sirloin_rump:            { rx: 44, ry: 26, tilt: 18,  taperL: 0.78, taperR: 0.78, arch: -4,  fill: "#BF3747", stroke: "#4A121B", fiberDeg: 22,  wave: 2 },
+  obturatorius_araignee:           { rx: 25, ry: 18, tilt: -12, taperL: 0.72, taperR: 0.72, arch: 0,   fill: "#8A1725", stroke: "#33080E", fiberDeg: -15, wave: 3 },
+  semimembranosus_top_round:       { rx: 46, ry: 28, tilt: 68,  taperL: 0.78, taperR: 0.72, arch: -3,  fill: "#A62333", stroke: "#3D0E16", fiberDeg: 74,  wave: 3 },
+  biceps_femoris_bottom_round:     { rx: 52, ry: 32, tilt: 64,  taperL: 0.82, taperR: 0.74, arch: 5,   fill: "#C43B4B", stroke: "#4A121B", fiberDeg: 68,  wave: 1 },
+  quadriceps_fiocco_knuckle:       { rx: 42, ry: 24, tilt: 54,  taperL: 0.68, taperR: 0.76, arch: -4,  fill: "#CC4756", stroke: "#4A121B", fiberDeg: 58,  wave: 2 },
+  gastrocnemius_hind_shank:        { rx: 42, ry: 18, tilt: 78,  taperL: 0.86, taperR: 0.48, arch: 0,   fill: "#911E2D", stroke: "#380B12", fiberDeg: 80,  wave: 2 },
+  tensor_fasciae_latae_tri_tip:    { rx: 38, ry: 22, tilt: 38,  taperL: 0.45, taperR: 0.85, arch: 0,   fill: "#C23A4A", stroke: "#4A121B", fiberDeg: 42,  wave: 2 },
+  auricula_rostrum_head:           { rx: 38, ry: 24, tilt: -16, taperL: 0.55, taperR: 0.88, arch: -3,  fill: "#D46A76", stroke: "#591822", fiberDeg: -14, wave: 1 },
+  cauda_tail_rabo:                 { rx: 34, ry: 11, tilt: 52,  taperL: 0.88, taperR: 0.35, arch: 5,   fill: "#9E2434", stroke: "#3D0E16", fiberDeg: 52,  wave: 1 },
+  viscera_presa_pluma_iberica_set: { rx: 52, ry: 13, tilt: 4,   taperL: 0.52, taperR: 0.52, arch: -2,  fill: "#B52D3D", stroke: "#4A121B", fiberDeg: 4,   wave: 3 },
+  cutis_cotenna_chicharron:        { rx: 82, ry: 12, tilt: 2,   taperL: 0.62, taperR: 0.62, arch: 5,   fill: "#DFC5A3", stroke: "#7A6248", fiberDeg: 2,   wave: 1 },
+  platysma_presa_collar_flank:     { rx: 44, ry: 20, tilt: 24,  taperL: 0.68, taperR: 0.78, arch: 4,   fill: "#D15866", stroke: "#591822", fiberDeg: 24,  wave: 1 }
+};
+
+function generateAnatomicalBellyPolygon(cx, cy, spec) {
+  const rx = spec.rx || 38;
+  const ry = spec.ry || 20;
+  const rad = ((spec.tilt || 0) * Math.PI) / 180;
+  const cosA = Math.cos(rad), sinA = Math.sin(rad);
+  const taperL = spec.taperL || 0.75;
+  const taperR = spec.taperR || 0.75;
+  const arch = spec.arch || 0;
+  const pts = [];
+  const N = 22;
+  for (let i = 0; i < N; i++) {
+    const theta = (i / N) * Math.PI * 2;
+    const ux = Math.cos(theta); // -1..1 along muscle length
+    const uy = Math.sin(theta); // -1..1 across muscle belly
+    const taper = ux < 0 ? (1 - (1 - taperL) * (-ux)) : (1 - (1 - taperR) * ux);
+    const localX = ux * rx;
+    const localY = uy * ry * taper + arch * (1 - ux * ux);
+    const px = cx + localX * cosA - localY * sinA;
+    const py = cy + localX * sinA + localY * cosA;
+    pts.push([px, py]);
+  }
+  return pts;
+}
+
+function subdividePolygonChaikin(pts) {
+  if (!pts || pts.length < 3) return pts || [];
+  const out = [];
+  for (let i = 0; i < pts.length; i++) {
+    const p0 = pts[i];
+    const p1 = pts[(i + 1) % pts.length];
+    out.push([0.75 * p0[0] + 0.25 * p1[0], 0.75 * p0[1] + 0.25 * p1[1]]);
+    out.push([0.25 * p0[0] + 0.75 * p1[0], 0.25 * p0[1] + 0.75 * p1[1]]);
+  }
+  return out;
+}
+
+function extractCutPolygon2D(cut) {
+  const spec = PORCINA_ANATOMY_SHAPES[cut.id];
+  const pin = (typeof PIN_COORDS !== "undefined" && PIN_COORDS[cut.id]) || null;
+  if (spec && pin) {
+    return generateAnatomicalBellyPolygon(pin.x, pin.y, spec);
+  }
+  const el = document.getElementById("poly-" + cut.id);
+  if (el) {
+    const pointsAttr = el.getAttribute("points");
+    if (pointsAttr) {
+      const nums = (pointsAttr.match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
+      const raw = [];
+      for (let i = 0; i + 1 < nums.length; i += 2) {
+        raw.push([nums[i], nums[i + 1]]);
+      }
+      if (raw.length >= 3) return subdividePolygonChaikin(raw);
+    }
+    const dAttr = el.getAttribute("d");
+    if (dAttr) {
+      const sampled = sampleSvgPathToPolygon(dAttr);
+      if (sampled.length >= 3) return sampled;
+    }
+  }
+  if (cut.svgPath) {
+    const sampled = sampleSvgPathToPolygon(cut.svgPath);
+    if (sampled.length >= 3) return sampled;
+  }
+  if (pin) {
+    return generateAnatomicalBellyPolygon(pin.x, pin.y, { rx: 40, ry: 22, tilt: 8 });
+  }
+  return [];
+}
+
+function buildMuscleMeshes3D() {
+  meshes3D = [];
+  CUTS.forEach((cut, idx) => {
+    const rawPts = extractCutPolygon2D(cut);
+    if (rawPts.length < 3) return;
+
+    // Transform SVG (0..920, 0..500) -> 3D Carcass space centered at (460, 245)
+    const poly2D = rawPts.map(p => [p[0] - 460, p[1] - 245]);
+
+    // Centroid & bounding radius
+    let cx = 0, cy = 0;
+    poly2D.forEach(p => { cx += p[0]; cy += p[1]; });
+    cx /= poly2D.length;
+    cy /= poly2D.length;
+
+    let maxR = 12;
+    poly2D.forEach(p => {
+      const d = Math.hypot(p[0] - cx, p[1] - cy);
+      if (d > maxR) maxR = d;
+    });
+
+    const el = document.getElementById("poly-" + cut.id);
+    const domStratum = el ? el.getAttribute("data-stratum") : null;
+    const stratum = domStratum || (typeof PEEL_STRATA !== "undefined" && PEEL_STRATA[cut.id]) || "SUPERFICIAL";
+    const isDeep = stratum === "DEEP";
+
+    const spec = PORCINA_ANATOMY_SHAPES[cut.id];
+    const idLower = cut.id.toLowerCase();
+    let wave = spec ? spec.wave : 2;
+    if (!spec) {
+      if (isDeep) {
+        wave = 3;
+      } else if (
+        idLower.includes("fatback") || idLower.includes("lardo") ||
+        idLower.includes("jowl") || idLower.includes("guanciale") ||
+        idLower.includes("belly") || idLower.includes("pancetta") ||
+        idLower.includes("rind") || idLower.includes("cotenna") ||
+        idLower.includes("cutaneus") || idLower.includes("pectoralis") ||
+        idLower.includes("cap") || idLower.includes("masseter") ||
+        idLower.includes("semitendinosus")
+      ) {
+        wave = 1;
+      }
+    }
+
+    // Tissue color palette based on stratum, collagen & myoglobin density
+    let fill = (spec && spec.fill) || cut.fill || (isDeep ? "#9E2030" : (wave === 1 ? "#CC4756" : "#BA3444"));
+    let stroke = (spec && spec.stroke) || cut.stroke || (isDeep ? "#3A0B12" : "#4A121B");
+    let fiberDeg = (spec && spec.fiberDeg !== undefined) ? spec.fiberDeg : (isDeep ? -18 : 14);
+
+    // Slight staggered Z-offset per cut index so neighboring muscles never z-fight
+    const zJitter = ((idx % 7) - 3) * 1.1;
+    const zBase = (wave === 3 ? 25 : (wave === 2 ? 45 : 64)) + zJitter;
+    const domeThickness = wave === 3 ? 13 : (wave === 2 ? 17 : 14);
+
+    // Compute true 3D Anatomical Extraction Vector (Outward + Radial from Ribcage Core)
+    const radialX = cx / 320;
+    const radialY = (cy - 8) / 180;
+    const pullMagZ = wave === 1 ? 124 : (wave === 2 ? 80 : 44);
+    const explodeVec = {
+      x: radialX * (wave === 1 ? 62 : (wave === 2 ? 40 : 22)),
+      y: radialY * (wave === 1 ? 78 : (wave === 2 ? 50 : 28)),
+      z: pullMagZ
+    };
+
+    // Skeletal attachment anchor on the spine/ribs/pelvis (Z ~ 16)
+    const boneAnchor = {
+      x: cx * 0.86,
+      y: Math.max(-96, Math.min(85, cy * 0.72)),
+      z: 18
+    };
+
+    const shortName =
+      (cut.regions && cut.regions.US && cut.regions.US.primary) ||
+      (cut.common ? cut.common.split("/")[0].trim() : cut.latin);
+
+    meshes3D.push({
+      id: cut.id,
+      num: cut.num,
+      latin: cut.latin,
+      shortName,
+      fill,
+      stroke,
+      fiberDeg,
+      stratum,
+      wave,
+      poly2D,
+      cx,
+      cy,
+      maxR,
+      zBase,
+      domeThickness,
+      explodeVec,
+      boneAnchor
+    });
+  });
+}
+
+function projectPoint3D(x, y, z, width, height) {
+  // Rotate around Y (yaw) then X (pitch)
+  const cosY = Math.cos(cam3D.yaw), sinY = Math.sin(cam3D.yaw);
+  const cosP = Math.cos(cam3D.pitch), sinP = Math.sin(cam3D.pitch);
+
+  const x1 = x * cosY + z * sinY;
+  const z1 = -x * sinY + z * cosY;
+
+  const y2 = y * cosP - z1 * sinP;
+  const z2 = y * sinP + z1 * cosP;
+
+  const fov = 760;
+  const viewerDist = 660;
+  const scale = (fov / Math.max(140, viewerDist - z2)) * cam3D.zoom * Math.min(width / 920, height / 470);
+
+  return {
+    sx: width * 0.5 + x1 * scale + cam3D.panX,
+    sy: height * 0.52 + y2 * scale + cam3D.panY,
+    depth: z2,
+    scale
+  };
+}
+
+function shadeColorHex(hex, lumDelta) {
+  let c = (hex || "#C83E4D").replace("#", "");
+  if (c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
+  let r = parseInt(c.substring(0,2), 16) || 180;
+  let g = parseInt(c.substring(2,4), 16) || 60;
+  let b = parseInt(c.substring(4,6), 16) || 70;
+  r = Math.max(0, Math.min(255, Math.round(r + lumDelta)));
+  g = Math.max(0, Math.min(255, Math.round(g + lumDelta)));
+  b = Math.max(0, Math.min(255, Math.round(b + lumDelta)));
+  return `rgb(${r},${g},${b})`;
+}
+
+function getMuscleDisplacement3D(m) {
+  // Staged wave progress from master explode slider (0..100)
+  const e = explode3DPct / 100;
+  let waveFactor = 0;
+  if (m.wave === 1) {
+    waveFactor = Math.min(1, e / 0.55);
+  } else if (m.wave === 2) {
+    waveFactor = Math.max(0, Math.min(1, (e - 0.18) / 0.62));
+  } else {
+    waveFactor = Math.max(0, Math.min(1, (e - 0.42) / 0.58));
+  }
+  // Ease out cubic
+  waveFactor = 1 - Math.pow(1 - waveFactor, 2.4);
+
+  // Respect activePeelLayer filter
+  if (typeof activePeelLayer !== "undefined") {
+    if (activePeelLayer === "DEEP" && m.stratum === "SUPERFICIAL") {
+      waveFactor = Math.max(waveFactor, 0.92);
+    }
+  }
+
+  // Individual muscle pull spring progress (0..1)
+  const indPull = cutPullProgress3D[m.id] || 0;
+
+  return {
+    dx: m.explodeVec.x * waveFactor + m.explodeVec.x * 0.85 * indPull,
+    dy: m.explodeVec.y * waveFactor + m.explodeVec.y * 0.85 * indPull,
+    dz: m.explodeVec.z * waveFactor + 78 * indPull,
+    totalFactor: Math.min(1.6, waveFactor + indPull)
+  };
+}
+
+function renderMyologia3DFrame() {
+  const canvas = document.getElementById("myologia3DCanvas");
+  const box = document.getElementById("stage3DCanvasBox");
+  if (!canvas || !box || stageDimensionMode !== "3D") return;
+
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const w = box.clientWidth || 800;
+  const h = box.clientHeight || 480;
+  if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+  }
+
+  const ctx = canvas.getContext("2d");
+  ctx.save();
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, w, h);
+
+  // Smooth camera damping
+  cam3D.yaw += (cam3D.targetYaw - cam3D.yaw) * 0.18;
+  cam3D.pitch += (cam3D.targetPitch - cam3D.pitch) * 0.18;
+  cam3D.zoom += (cam3D.targetZoom - cam3D.zoom) * 0.18;
+
+  // Auto-peel animation loop
+  if (autoPeelPlaying) {
+    explode3DPct += autoPeelDir * 0.65;
+    if (explode3DPct >= 100) { explode3DPct = 100; autoPeelDir = -1; }
+    if (explode3DPct <= 0)   { explode3DPct = 0;   autoPeelDir = 1; }
+    const slider = document.getElementById("explode3DSlider");
+    if (slider) slider.value = Math.round(explode3DPct);
+    const ro = document.getElementById("explodePctReadout");
+    if (ro) ro.textContent = `${Math.round(explode3DPct)}%`;
+  }
+
+  // Smooth individual muscle pull progress
+  meshes3D.forEach(m => {
+    const target = pulledCutIds3D.has(m.id) ? 1.0 : 0.0;
+    const cur = cutPullProgress3D[m.id] || 0.0;
+    cutPullProgress3D[m.id] = cur + (target - cur) * 0.18;
+  });
+
+  // 1. Draw Francis Bacon x Massimo Vignelli 3D Golden Space-Frame Box
+  const frameCorners = [
+    [-395, -155, -95], [335, -155, -95], [335, 215, -95], [-395, 215, -95],
+    [-395, -155,  95], [335, -155,  95], [335, 215,  95], [-395, 215,  95]
+  ].map(pt => projectPoint3D(pt[0], pt[1], pt[2], w, h));
+
+  const frameEdges = [
+    [0,1],[1,2],[2,3],[3,0],
+    [4,5],[5,6],[6,7],[7,4],
+    [0,4],[1,5],[2,6],[3,7]
+  ];
+  ctx.strokeStyle = "rgba(255, 212, 0, 0.24)";
+  ctx.lineWidth = 1.1;
+  frameEdges.forEach(([a, b]) => {
+    ctx.beginPath();
+    ctx.moveTo(frameCorners[a].sx, frameCorners[a].sy);
+    ctx.lineTo(frameCorners[b].sx, frameCorners[b].sy);
+    ctx.stroke();
+  });
+
+  // 2. Collect renderable 3D primitives (Skeleton + Far-Flank Muscles + Near-Flank Muscles) and depth-sort
+  const renderQueue = [];
+
+  // 2a. Skeleton Primitives
+  if (skeleton3D) {
+    // Vertebral column segments
+    for (let i = 0; i < skeleton3D.spinePts.length - 1; i++) {
+      const a = skeleton3D.spinePts[i];
+      const b = skeleton3D.spinePts[i + 1];
+      const pa = projectPoint3D(a.x, a.y, a.z, w, h);
+      const pb = projectPoint3D(b.x, b.y, b.z, w, h);
+      const ps = projectPoint3D((a.x+b.x)*0.5, (a.y+b.y)*0.5 - 22, 0, w, h);
+      renderQueue.push({
+        type: "spineSeg",
+        depth: (pa.depth + pb.depth) * 0.5,
+        pa, pb, ps
+      });
+    }
+
+    // 14 Rib pairs
+    skeleton3D.ribs.forEach(rib => {
+      const projArc = rib.arc.map(pt => projectPoint3D(pt.x, pt.y, pt.z, w, h));
+      const midDepth = projArc[Math.floor(projArc.length / 2)].depth;
+      renderQueue.push({
+        type: "rib",
+        depth: midDepth,
+        projArc,
+        side: rib.side
+      });
+    });
+
+    // Skull, Pelvis, Scapula (Scapula lifts with Wave 2 peel!)
+    const scapLift = Math.max(0, Math.min(1, (explode3DPct / 100 - 0.15) / 0.65)) * 42;
+    for (const side of (showFarFlank3D ? [1, -1] : [1])) {
+      const scapProj = skeleton3D.scapulaPoly.map(p =>
+        projectPoint3D(p.x - scapLift * 0.25, p.y - scapLift * 0.45, side * (p.z + scapLift), w, h)
+      );
+      renderQueue.push({
+        type: "bonePlate",
+        name: "Scapula",
+        depth: scapProj[0].depth,
+        pts: scapProj,
+        side
+      });
+
+      const pelvProj = skeleton3D.pelvisPoly.map(p =>
+        projectPoint3D(p.x, p.y, side * p.z, w, h)
+      );
+      renderQueue.push({
+        type: "bonePlate",
+        name: "Pelvis",
+        depth: pelvProj[0].depth,
+        pts: pelvProj,
+        side
+      });
+
+      skeleton3D.limbs.forEach(limb => {
+        const lProj = limb.map(p => projectPoint3D(p.x, p.y, side * p.z, w, h));
+        renderQueue.push({
+          type: "limbBone",
+          depth: lProj[1].depth,
+          pts: lProj,
+          side
+        });
+      });
+    }
+
+    const skullProj = skeleton3D.skullPoly.map(p => projectPoint3D(p.x, p.y, p.z, w, h));
+    renderQueue.push({
+      type: "bonePlate",
+      name: "Cranium",
+      depth: skullProj[2].depth,
+      pts: skullProj,
+      side: 1
+    });
+  }
+
+  // 2b. Volumetric 3D Muscle Bodies
+  const sides = showFarFlank3D ? [-1, 1] : [1];
+  meshes3D.forEach(m => {
+    // Check if hidden when user explicitly clicked "Deep Core Only" in 2D toolbar and explode is 0
+    const disp = getMuscleDisplacement3D(m);
+    sides.forEach(side => {
+      const sideFactor = side === 1 ? 1 : 0.55;
+      const zInner = side * (m.zBase + disp.dz * sideFactor);
+      const zOuter = side * (m.zBase + m.domeThickness + disp.dz * sideFactor);
+      const dx = disp.dx * sideFactor;
+      const dy = disp.dy * sideFactor;
+
+      const innerPts = m.poly2D.map(p => projectPoint3D(p[0] + dx, p[1] + dy, zInner, w, h));
+      const outerPts = m.poly2D.map(p => projectPoint3D(p[0] + dx, p[1] + dy, zOuter, w, h));
+      const centerOuter = projectPoint3D(m.cx + dx, m.cy + dy, zOuter + side * 4, w, h);
+      const centerInner = projectPoint3D(m.cx + dx, m.cy + dy, zInner, w, h);
+      const bonePt = projectPoint3D(m.boneAnchor.x, m.boneAnchor.y, side * m.boneAnchor.z, w, h);
+
+      renderQueue.push({
+        type: "muscle",
+        m,
+        side,
+        depth: centerOuter.depth,
+        innerPts,
+        outerPts,
+        centerOuter,
+        centerInner,
+        bonePt,
+        disp
+      });
+    });
+  });
+
+  // Sort back-to-front by 3D camera depth
+  renderQueue.sort((a, b) => a.depth - b.depth);
+  screenPolys3D = [];
+
+  // 3. Draw sorted 3D scene
+  renderQueue.forEach(item => {
+    if (item.type === "spineSeg") {
+      // Spinous process blade
+      ctx.beginPath();
+      ctx.moveTo(item.pa.sx, item.pa.sy);
+      ctx.lineTo(item.ps.sx, item.ps.sy);
+      ctx.lineTo(item.pb.sx, item.pb.sy);
+      ctx.closePath();
+      ctx.fillStyle = "rgba(232, 221, 203, 0.42)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(243, 236, 225, 0.78)";
+      ctx.lineWidth = 3.2 * item.pa.scale;
+      ctx.beginPath();
+      ctx.moveTo(item.pa.sx, item.pa.sy);
+      ctx.lineTo(item.pb.sx, item.pb.sy);
+      ctx.stroke();
+    } else if (item.type === "rib") {
+      ctx.beginPath();
+      item.projArc.forEach((p, idx) => {
+        if (idx === 0) ctx.moveTo(p.sx, p.sy);
+        else ctx.lineTo(p.sx, p.sy);
+      });
+      ctx.strokeStyle = item.side === 1 ? "rgba(240, 231, 214, 0.76)" : "rgba(185, 173, 156, 0.35)";
+      ctx.lineWidth = Math.max(1.5, 3.4 * item.projArc[0].scale);
+      ctx.lineCap = "round";
+      ctx.stroke();
+    } else if (item.type === "limbBone") {
+      ctx.beginPath();
+      item.pts.forEach((p, idx) => {
+        if (idx === 0) ctx.moveTo(p.sx, p.sy);
+        else ctx.lineTo(p.sx, p.sy);
+      });
+      ctx.strokeStyle = item.side === 1 ? "rgba(238, 228, 210, 0.82)" : "rgba(180, 168, 150, 0.32)";
+      ctx.lineWidth = Math.max(2.2, 5.2 * item.pts[0].scale);
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.stroke();
+    } else if (item.type === "bonePlate") {
+      ctx.beginPath();
+      item.pts.forEach((p, idx) => {
+        if (idx === 0) ctx.moveTo(p.sx, p.sy);
+        else ctx.lineTo(p.sx, p.sy);
+      });
+      ctx.closePath();
+      ctx.fillStyle = item.side === 1 ? "rgba(236, 226, 208, 0.56)" : "rgba(180, 168, 152, 0.22)";
+      ctx.strokeStyle = item.side === 1 ? "rgba(255, 245, 228, 0.85)" : "rgba(180, 168, 152, 0.4)";
+      ctx.lineWidth = 1.4;
+      ctx.fill();
+      ctx.stroke();
+    } else if (item.type === "muscle") {
+      const { m, side, innerPts, outerPts, centerOuter, centerInner, bonePt, disp } = item;
+      const isSelected = (typeof selectedCutId !== "undefined") && m.id === selectedCutId;
+      const isPulled = (cutPullProgress3D[m.id] || 0) > 0.08;
+
+      // Dim superficial layer slightly if user selected DEEP peel in 2D bar
+      let alpha = side === 1 ? 0.93 : 0.46;
+      if (typeof activePeelLayer !== "undefined") {
+        if (activePeelLayer === "DEEP" && m.stratum === "SUPERFICIAL" && !isSelected) {
+          alpha = side === 1 ? 0.20 : 0.10;
+        } else if (activePeelLayer === "SUPERFICIAL" && m.stratum === "DEEP" && !isSelected) {
+          alpha = side === 1 ? 0.35 : 0.15;
+        }
+      }
+
+      ctx.save();
+      ctx.globalAlpha = alpha;
+
+      // Draw anatomical tether line back to skeletal origin when muscle is pulled or exploded
+      if (showTethers3D && side === 1 && (disp.totalFactor > 0.12 || isSelected)) {
+        ctx.save();
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = isSelected ? "#FFD400" : "rgba(255, 212, 0, 0.55)";
+        ctx.lineWidth = isSelected ? 1.8 : 1.0;
+        ctx.beginPath();
+        ctx.moveTo(bonePt.sx, bonePt.sy);
+        ctx.lineTo(centerInner.sx, centerInner.sy);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        // Origin anchor dot on bone
+        ctx.fillStyle = "#FFD400";
+        ctx.beginPath();
+        ctx.arc(bonePt.sx, bonePt.sy, isSelected ? 3.2 : 2.0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // 3D Extruded Sidewall Bevel between innerPts and outerPts
+      const sideWallColor = shadeColorHex(m.fill, -42);
+      ctx.fillStyle = sideWallColor;
+      ctx.strokeStyle = shadeColorHex(m.stroke, -25);
+      ctx.lineWidth = 0.6;
+      for (let i = 0; i < outerPts.length; i++) {
+        const j = (i + 1) % outerPts.length;
+        ctx.beginPath();
+        ctx.moveTo(innerPts[i].sx, innerPts[i].sy);
+        ctx.lineTo(innerPts[j].sx, innerPts[j].sy);
+        ctx.lineTo(outerPts[j].sx, outerPts[j].sy);
+        ctx.lineTo(outerPts[i].sx, outerPts[i].sy);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Sculpted Outer Muscle Face with 3D radial fascia highlight
+      ctx.beginPath();
+      outerPts.forEach((p, idx) => {
+        if (idx === 0) ctx.moveTo(p.sx, p.sy);
+        else ctx.lineTo(p.sx, p.sy);
+      });
+      ctx.closePath();
+
+      const gradR = Math.max(18, m.maxR * centerOuter.scale * 1.15);
+      const grad = ctx.createRadialGradient(
+        centerOuter.sx - gradR * 0.22,
+        centerOuter.sy - gradR * 0.25,
+        gradR * 0.08,
+        centerOuter.sx,
+        centerOuter.sy,
+        gradR
+      );
+      grad.addColorStop(0, shadeColorHex(m.fill, isSelected ? 48 : 28));
+      grad.addColorStop(0.62, m.fill);
+      grad.addColorStop(1, shadeColorHex(m.fill, -34));
+
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      ctx.strokeStyle = isSelected ? "#FFD400" : (isPulled ? "#FFF2A6" : m.stroke);
+      ctx.lineWidth = isSelected ? 2.6 : (isPulled ? 1.8 : 1.1);
+      ctx.stroke();
+
+      // Muscle fiber striation lines clipped inside the outer face along m.fiberDeg
+      if (side === 1 && alpha > 0.35) {
+        ctx.save();
+        ctx.clip();
+        ctx.translate(centerOuter.sx, centerOuter.sy);
+        ctx.rotate(((m.fiberDeg || 0) * Math.PI) / 180);
+        ctx.strokeStyle = m.id.includes("lardo") || m.id.includes("cotenna")
+          ? "rgba(120, 95, 70, 0.22)"
+          : "rgba(255, 238, 224, 0.28)";
+        ctx.lineWidth = 0.9;
+        const span = m.maxR * centerOuter.scale;
+        for (let s = -5; s <= 5; s++) {
+          const off = (s / 5.2) * span * 0.78;
+          ctx.beginPath();
+          ctx.moveTo(-span * 0.95, off);
+          ctx.quadraticCurveTo(0, off - span * 0.08, span * 0.95, off);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      // Register near-flank polygon for click/tap raycast hit testing
+      if (side === 1 && alpha > 0.25) {
+        screenPolys3D.push({
+          id: m.id,
+          pts: outerPts,
+          center: centerOuter,
+          depth: centerOuter.depth
+        });
+
+        // Draw locus pin badge in 3D space
+        const pinR = isSelected ? 11.5 : 8.5;
+        ctx.beginPath();
+        ctx.arc(centerOuter.sx, centerOuter.sy, pinR, 0, Math.PI * 2);
+        ctx.fillStyle = isSelected ? "#FFD400" : (m.stratum === "DEEP" ? "#8B1A2B" : "#141010");
+        ctx.fill();
+        ctx.lineWidth = isSelected ? 2.0 : 1.1;
+        ctx.strokeStyle = isSelected ? "#141010" : "#FFD400";
+        ctx.stroke();
+
+        ctx.fillStyle = isSelected ? "#141010" : "#F3ECE1";
+        ctx.font = `700 ${isSelected ? 8.5 : 7.2}px "JetBrains Mono", monospace`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(m.num, centerOuter.sx, centerOuter.sy + 0.5);
+      }
+
+      ctx.restore();
+    }
+  });
+
+  ctx.restore();
+  animFrame3D = requestAnimationFrame(renderMyologia3DFrame);
+}
+
+function pointInPoly2D(x, y, pts) {
+  let inside = false;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+    const xi = pts[i].sx, yi = pts[i].sy;
+    const xj = pts[j].sx, yj = pts[j].sy;
+    const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / ((yj - yi) || 1e-6) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+function update3DHud() {
+  const cut = (typeof CUT_BY_ID !== "undefined" && CUT_BY_ID[selectedCutId]) || CUTS[0];
+  if (!cut) return;
+  const isPulled = pulledCutIds3D.has(cut.id);
+  const titleEl = document.getElementById("hud3DTitle");
+  const subEl = document.getElementById("hud3DSub");
+  const codeEl = document.getElementById("hud3DSelectedCode");
+  const stateEl = document.getElementById("hud3DSelectedState");
+  const pullBtn = document.getElementById("btnPullSelected3D");
+
+  const usName =
+    (cut.regions && cut.regions.US && cut.regions.US.primary) ||
+    (cut.common ? cut.common.split("/")[0].trim() : cut.latin);
+  const el = document.getElementById("poly-" + cut.id);
+  const strat = (el && el.getAttribute("data-stratum")) || (typeof PEEL_STRATA !== "undefined" && PEEL_STRATA[cut.id]) || "SUPERFICIAL";
+  const svShort = (cut.sous_vide || cut.targetTempC || "62°C").split("|")[0].trim();
+  if (titleEl) titleEl.textContent = `${cut.num} · ${usName} (${cut.latin.replace("Musculus ", "M. ")})`;
+  if (subEl) subEl.textContent = `STRATUM: ${strat} · SOUS-VIDE: ${svShort} · Drag to orbit 360° or tap any muscle to pull/dock`;
+  if (codeEl) codeEl.textContent = `${cut.num} · ${isPulled ? "EXTRACTED" : "DOCKED"}`;
+  if (stateEl) stateEl.textContent = isPulled ? "PULLED OFF SKELETON (TAP TO DOCK)" : "TAP MUSCLE TO PULL OFF BONE";
+  if (pullBtn) pullBtn.textContent = isPulled ? "🧲 Dock Selected Muscle" : "🧲 Pull Selected Muscle";
+}
+
+function onExplodeSliderInput(val) {
+  autoPeelPlaying = false;
+  const btn = document.getElementById("btnAnimatePeel3D");
+  if (btn) {
+    btn.classList.remove("playing");
+    btn.textContent = "▶ Animate Peel";
+  }
+  explode3DPct = Number(val) || 0;
+  const ro = document.getElementById("explodePctReadout");
+  if (ro) ro.textContent = `${Math.round(explode3DPct)}%`;
+}
+
+function toggleAutoPeel3D() {
+  autoPeelPlaying = !autoPeelPlaying;
+  const btn = document.getElementById("btnAnimatePeel3D");
+  if (btn) {
+    btn.classList.toggle("playing", autoPeelPlaying);
+    btn.textContent = autoPeelPlaying ? "⏸ Pause Peel" : "▶ Animate Peel";
+  }
+}
+
+function togglePullSelectedMuscle3D() {
+  if (!selectedCutId) return;
+  if (pulledCutIds3D.has(selectedCutId)) {
+    pulledCutIds3D.delete(selectedCutId);
+  } else {
+    pulledCutIds3D.add(selectedCutId);
+  }
+  update3DHud();
+}
+
+function peelOuterLayer3D() {
+  // Pull all Wave 1 & Superficial muscles outward to expose deep core
+  let anyUnpulled = false;
+  meshes3D.forEach(m => {
+    if (m.stratum === "SUPERFICIAL" && !pulledCutIds3D.has(m.id)) anyUnpulled = true;
+  });
+  meshes3D.forEach(m => {
+    if (m.stratum === "SUPERFICIAL") {
+      if (anyUnpulled) pulledCutIds3D.add(m.id);
+      else pulledCutIds3D.delete(m.id);
+    }
+  });
+  update3DHud();
+}
+
+function resetDissection3D() {
+  autoPeelPlaying = false;
+  explode3DPct = 0;
+  pulledCutIds3D.clear();
+  const slider = document.getElementById("explode3DSlider");
+  if (slider) slider.value = 0;
+  const ro = document.getElementById("explodePctReadout");
+  if (ro) ro.textContent = "0%";
+  const btn = document.getElementById("btnAnimatePeel3D");
+  if (btn) {
+    btn.classList.remove("playing");
+    btn.textContent = "▶ Animate Peel";
+  }
+  setCameraPreset3D(-0.46, 0.22, 1.0);
+  update3DHud();
+}
+
+function setCameraPreset3D(yaw, pitch, zoom) {
+  cam3D.targetYaw = yaw;
+  cam3D.targetPitch = pitch;
+  cam3D.targetZoom = zoom;
+  cam3D.panX = 0;
+  cam3D.panY = 0;
+}
+
+function toggleFarFlank3D() {
+  showFarFlank3D = !showFarFlank3D;
+  const btn = document.getElementById("btnToggleFarFlank3D");
+  if (btn) btn.textContent = `Bilateral Flank: ${showFarFlank3D ? "ON" : "OFF"}`;
+}
+
+function toggleTethers3D() {
+  showTethers3D = !showTethers3D;
+  const btn = document.getElementById("btnToggleTethers3D");
+  if (btn) btn.textContent = `Skeletal Tethers: ${showTethers3D ? "ON" : "OFF"}`;
+}
+
+let engine3DInitialized = false;
+function initMyologia3DEngine() {
+  if (!skeleton3D) skeleton3D = buildSkeleton3D();
+  if (!meshes3D.length) buildMuscleMeshes3D();
+  if (!engine3DInitialized) {
+    engine3DInitialized = true;
+    const canvas = document.getElementById("myologia3DCanvas");
+    if (canvas) {
+      let dragging = false;
+      let startX = 0, startY = 0;
+      let lastX = 0, lastY = 0;
+      let pinchDist0 = 0;
+
+      canvas.addEventListener("pointerdown", e => {
+        dragging = true;
+        startX = lastX = e.clientX;
+        startY = lastY = e.clientY;
+        canvas.setPointerCapture(e.pointerId);
+      });
+
+      canvas.addEventListener("pointermove", e => {
+        if (!dragging) return;
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        cam3D.targetYaw += dx * 0.0085;
+        cam3D.targetPitch = Math.max(-1.25, Math.min(1.25, cam3D.targetPitch + dy * 0.0075));
+      });
+
+      canvas.addEventListener("pointerup", e => {
+        if (!dragging) return;
+        dragging = false;
+        const moved = Math.hypot(e.clientX - startX, e.clientY - startY);
+        if (moved < 7) {
+          // Raycast tap against front-most 3D muscle polygon or pin
+          const rect = canvas.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          let hitId = null;
+
+          // First check pin circles (front-to-back)
+          for (let i = screenPolys3D.length - 1; i >= 0; i--) {
+            const sp = screenPolys3D[i];
+            if (Math.hypot(x - sp.center.sx, y - sp.center.sy) <= 15) {
+              hitId = sp.id;
+              break;
+            }
+          }
+          // Next check muscle polygons (front-to-back)
+          if (!hitId) {
+            for (let i = screenPolys3D.length - 1; i >= 0; i--) {
+              const sp = screenPolys3D[i];
+              if (pointInPoly2D(x, y, sp.pts)) {
+                hitId = sp.id;
+                break;
+              }
+            }
+          }
+          if (hitId) {
+            if (selectedCutId === hitId) {
+              // Tapping already-selected muscle toggles pulling/docking it!
+              togglePullSelectedMuscle3D();
+            } else {
+              selectCut(hitId, false);
+              pulledCutIds3D.add(hitId);
+              update3DHud();
+            }
+          }
+        }
+      });
+
+      canvas.addEventListener("wheel", e => {
+        e.preventDefault();
+        const factor = e.deltaY > 0 ? 0.92 : 1.08;
+        cam3D.targetZoom = Math.max(0.55, Math.min(2.4, cam3D.targetZoom * factor));
+      }, { passive: false });
+
+      canvas.addEventListener("touchstart", e => {
+        if (e.touches.length === 2) {
+          pinchDist0 = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+        }
+      }, { passive: true });
+
+      canvas.addEventListener("touchmove", e => {
+        if (e.touches.length === 2 && pinchDist0 > 10) {
+          const d = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          const ratio = d / pinchDist0;
+          pinchDist0 = d;
+          cam3D.targetZoom = Math.max(0.55, Math.min(2.4, cam3D.targetZoom * ratio));
+        }
+      }, { passive: true });
+    }
+  }
+  if (!animFrame3D) {
+    animFrame3D = requestAnimationFrame(renderMyologia3DFrame);
+  }
+}
+
+// Hook selectCut so 3D HUD stays synced whenever a cut is picked from anywhere
+const _origSelectCutFor3D = selectCut;
+selectCut = function(cutId, scrollToStage = false) {
+  _origSelectCutFor3D(cutId, scrollToStage);
+  if (typeof update3DHud === "function") update3DHud();
+};
+
+// Mobile Initialization:
+// 1. Place #specimenDossier right below #atlasStageSection so tapping a muscle updates the Monograph right below your thumb
+// 2. Default Mode II Concordance to Pairwise (US vs IT/FR) on narrow phone screens so it fits with zero horizontal overflow
+(function initMobileAndLayoutUpgrades() {
+  const stageSec = document.getElementById("atlasStageSection");
+  const dossier = document.getElementById("specimenDossier");
+  if (stageSec && dossier && stageSec.parentNode) {
+    stageSec.insertAdjacentElement("afterend", dossier);
+  }
+
+  // Wrap renderConcordance to toggle .pairwise-mobile class when pairA !== 'ALL'
+  if (typeof renderConcordance === "function") {
+    const _origRenderConcordance = renderConcordance;
+    renderConcordance = function() {
+      _origRenderConcordance();
+      const tbl = document.getElementById("concordanceTable");
+      const pairA = document.getElementById("pairA");
+      if (tbl && pairA) {
+        tbl.classList.toggle("pairwise-mobile", pairA.value !== "ALL");
+      }
+    };
+    if (window.innerWidth <= 860) {
+      const pairA = document.getElementById("pairA");
+      const pairB = document.getElementById("pairB");
+      if (pairA && pairA.value === "ALL") {
+        pairA.value = "US";
+        if (pairB) pairB.value = "IT";
+        renderConcordance();
+      }
+    }
+  }
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("pull")) {
+    params.get("pull").split(",").forEach(id => pulledCutIds3D.add(id.trim()));
+  }
+  if (params.get("explode")) {
+    onExplodeSliderInput(Number(params.get("explode")));
+    const sl = document.getElementById("explode3DSlider");
+    if (sl) sl.value = Number(params.get("explode"));
+  }
+  if (params.get("view") === "3d") {
+    setStageDimensionMode("3D");
+  }
+})();
+
 </script>
 </body>
 </html>
