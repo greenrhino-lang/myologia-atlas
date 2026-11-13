@@ -4870,7 +4870,7 @@
   <!-- COLOPHON -->
   <footer class="colophon">
     <span>DENOYER-GEPPERT ANATOMICAL SERIES · SONDERDRUCK FÜR ANTHONY ACCARDI (EX LIBRIS CHRIS)</span>
-    <span>NOMINA ANATOMICA VETERINARIA (N.A.V.) · 26 SPECIMINA · 8 TRADITIONES · 6 TAFELN</span>
+    <span>NOMINA ANATOMICA VETERINARIA (N.A.V.) · 31 SPECIMINA · 8 TRADITIONES · 6 TAFELN</span>
   </footer>
 </div>
 
@@ -7828,6 +7828,13 @@ function selectCut(cutId, jumpToDiagram = false) {
       stageEl.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
+}
+
+// Transverse-plane specimen links must select the cut and reveal its dossier.
+function selectCutAndScroll(cutId) {
+  selectCut(cutId, true);
+  const dossier = document.getElementById("specimenDossier");
+  if (dossier) dossier.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function stepCut(delta) {
