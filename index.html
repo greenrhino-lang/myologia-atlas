@@ -9156,11 +9156,14 @@ function initMyologia3DEngine() {
     const canvas = document.getElementById("myologia3DCanvas");
     if (canvas) {
       let dragging = false;
+      let activePointerId = null;
       let startX = 0, startY = 0;
       let lastX = 0, lastY = 0;
       let pinchDist0 = 0;
 
       canvas.addEventListener("pointerdown", e => {
+        if (activePointerId !== null) return;
+        activePointerId = e.pointerId;
         dragging = true;
         startX = lastX = e.clientX;
         startY = lastY = e.clientY;
@@ -9168,7 +9171,7 @@ function initMyologia3DEngine() {
       });
 
       canvas.addEventListener("pointermove", e => {
-        if (!dragging) return;
+        if (!dragging || e.pointerId !== activePointerId) return;
         const dx = e.clientX - lastX;
         const dy = e.clientY - lastY;
         lastX = e.clientX;
@@ -9178,8 +9181,9 @@ function initMyologia3DEngine() {
       });
 
       canvas.addEventListener("pointerup", e => {
-        if (!dragging) return;
+        if (!dragging || e.pointerId !== activePointerId) return;
         dragging = false;
+        activePointerId = null;
         const moved = Math.hypot(e.clientX - startX, e.clientY - startY);
         if (moved < 7) {
           // Raycast tap against front-most 3D muscle polygon or pin
@@ -9217,6 +9221,13 @@ function initMyologia3DEngine() {
             }
           }
         }
+      });
+
+      canvas.addEventListener("pointercancel", e => {
+        if (e.pointerId === activePointerId) { dragging = false; activePointerId = null; }
+      });
+      canvas.addEventListener("lostpointercapture", e => {
+        if (e.pointerId === activePointerId) { dragging = false; activePointerId = null; }
       });
 
       canvas.addEventListener("wheel", e => {
@@ -9294,11 +9305,29 @@ selectCut = function(cutId, scrollToStage = false) {
   if (params.get("pull")) {
     params.get("pull").split(",").forEach(id => pulledCutIds3D.add(id.trim()));
   }
-  if (params.get("explode")) {
-    onExplodeSliderInput(Number(params.get("explode")));
-    const sl = document.getElementById("explode3DSlider");
-    if (sl) sl.value = Number(params.get("explode"));
+  if (params.has("explode")) {
+    const rawExplode = Number(params.get("explode"));
+    if (Number.isFinite(rawExplode)) {
+      const safeExplode = Math.max(0, Math.min(100, rawExplode));
+      onExplodeSliderInput(safeExplode);
+      const sl = document.getElementById("explode3DSlider");
+      if (sl) sl.value = safeExplode;
+    }
   }
+  // Reconcile concordance columns when a device rotates or the browser is resized.
+  let lastNarrow = window.innerWidth <= 860;
+  window.addEventListener("resize", () => {
+    const narrow = window.innerWidth <= 860;
+    if (narrow === lastNarrow) return;
+    lastNarrow = narrow;
+    const pairA = document.getElementById("pairA");
+    const pairB = document.getElementById("pairB");
+    if (narrow && pairA && pairA.value === "ALL") {
+      pairA.value = "US";
+      if (pairB) pairB.value = "IT";
+    }
+    if (typeof renderConcordance === "function") renderConcordance();
+  }, { passive: true });
   if (params.get("view") === "3d") {
     setStageDimensionMode("3D");
   }
