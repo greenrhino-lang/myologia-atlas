@@ -7211,6 +7211,7 @@ function renderPhaseGrid() {
     { tc: 90, tf: 194 }
   ];
 
+  const majorTemps = new Set([51, 57, 66, 72, 90]);
   tempTicks.forEach(t => {
     const x = phaseTempToX(t.tc);
     html += `
@@ -7218,15 +7219,13 @@ function renderPhaseGrid() {
             stroke="${t.bold ? '#8f1d14' : 'rgba(26,24,22,0.12)'}"
             stroke-width="${t.bold ? 1.5 : 0.8}"
             stroke-dasharray="${t.bold ? 'none' : '2,3'}"/>
-      <text x="${x.toFixed(1)}" y="483" text-anchor="middle" font-family="monospace" font-size="10" font-weight="700" fill="${t.bold ? '#8f1d14' : '#1a1816'}">${t.tc}°C</text>
-      <text x="${x.toFixed(1)}" y="496" text-anchor="middle" font-family="monospace" font-size="9" fill="#5e5951">(${t.tf}°F)</text>
-      <text x="${x.toFixed(1)}" y="44" text-anchor="middle" font-family="monospace" font-size="9" fill="#5e5951">${t.tf}°F</text>
+      ${majorTemps.has(t.tc) ? `<text x="${x.toFixed(1)}" y="483" text-anchor="middle" font-family="monospace" font-size="11" font-weight="700" fill="${t.bold ? '#8f1d14' : '#1a1816'}">${t.tc}°C</text>` : ""}
     `;
   });
 
   // Logarithmic Time horizontal grid ticks
   const timeTicks = [
-    { h: 0.55, label: "60s Sear" },
+    { h: 0.55, label: "0.55 hr*" },
     { h: 1.5,  label: "1.5 hr" },
     { h: 3.0,  label: "3 hr" },
     { h: 6.0,  label: "6 hr" },
@@ -7248,10 +7247,10 @@ function renderPhaseGrid() {
   // Axis Titles
   html += `
     <text x="604" y="518" text-anchor="middle" font-family="monospace" font-size="10.5" font-weight="700" letter-spacing="1.5" fill="#1a1816">
-      INTERNAL CORE TEMPERATURE (°C / °F) — PRECISION EXPANDED SUB-ACTIN SCALE (51–66 °C) + BRAISE SCALE (66–90 °C)
+      CORE TEMPERATURE (°C) · EXPANDED 51–66 °C SCALE
     </text>
     <text x="22" y="260" text-anchor="middle" font-family="monospace" font-size="10.5" font-weight="700" letter-spacing="1.5" fill="#1a1816" transform="rotate(-90, 22, 260)">
-      THERMAL DWELL TIME (LOG SCALE: 60 SEC → 48 HOURS)
+      TIME (LOG SCALE, HOURS)
     </text>
   `;
 
@@ -7272,15 +7271,15 @@ function syncPhaseSvgTheme() {
     if (isBR) {
       f2Kicker.textContent = "BV-SS 04 // BACON × VIGNELLI PORCINE LIPID, MYOSIN, GELATIN & CHICHARRÓN PHASE CONSOLE";
       f2Title.textContent = "PORCINE OLEIN LIQUEFACTION, ROSE SARCOMERE GELATION & COLLAGEN HYDROLYSIS (32 °C – 200 °C)";
-      f2Sub.textContent = "Four Francis Bacon specimen vitrines mapped onto a Massimo Vignelli X-Y coordinate grid — click any porcine pin (I.01–V.05) to inspect its dual-state thermal transformation.";
+      f2Sub.textContent = "Bacon-inspired specimen vitrines on a Vignelli grid. Select a numbered locus for the full protocol and alternate state.";
     } else if (isLab) {
       f2Kicker.textContent = "02 // THERMODYNAMIC DENATURATION & COLLAGEN HYDROLYSIS MATRIX";
       f2Title.textContent = "TEMPERATURE × LOGARITHMIC DWELL TIME PHASE DIAGRAM";
-      f2Sub.textContent = "Quantitative myofibrillar and perimysial phase transitions across all 26 bovine loci — click any pin (01–26) to inspect State A / State B kinetics.";
+      f2Sub.textContent = "Porcine thermal loci: select a numbered pin to inspect State A and alternate State B kinetics.";
     } else {
       f2Kicker.textContent = "Fig. 2 · Thermisches Denaturierungs- & Kollagen-Phasendiagramm";
       f2Title.textContent = "The Thermal & Collagen Phase Chart (Temperature × Logarithmic Time)";
-      f2Sub.textContent = "Why some muscles demand 90 seconds at 52 °C while others transform over 48 hours at 62 °C or 16 hours at 82 °C — click any specimen pin (01–26) to inspect its biochemical state.";
+      f2Sub.textContent = "Select a numbered specimen to reveal its thermal protocol and biochemical state. Labels stay focused on the active muscle; other loci remain visible.";
     }
   }
 
@@ -7426,12 +7425,12 @@ function renderPhaseChart() {
           <text x="${x2.toFixed(1)}" y="${(y2 + 3).toFixed(1)}" text-anchor="middle"
                 font-family="monospace" font-size="7.5" font-weight="700" fill="${strokeCol}"
                 style="pointer-events:none;">B</text>
-          <rect x="${(x2 + 9).toFixed(1)}" y="${(y2 - 9).toFixed(1)}" width="${(pd.short2.length * 5.7 + 10).toFixed(0)}" height="16" rx="1"
+          ${isActive ? `<rect x="${(x2 + 9).toFixed(1)}" y="${(y2 - 9).toFixed(1)}" width="${(pd.short2.length * 5.7 + 10).toFixed(0)}" height="16" rx="1"
                 fill="${pinBgHex}" stroke="${strokeCol}" stroke-width="0.9"/>
           <text x="${(x2 + 14).toFixed(1)}" y="${(y2 + 2).toFixed(1)}"
                 font-family="monospace" font-size="8.8" font-weight="700" fill="${strokeCol}">
             ${c.num}B · ${pd.short2}
-          </text>
+          </text>` : ""}
         </g>
       `;
     }
@@ -7447,6 +7446,7 @@ function renderPhaseChart() {
       `;
     }
 
+    // Only annotate the active specimen. Numbered pins retain the full atlas without text collisions.
     // Label placement (left vs right of pin)
     const isLeft = (pd.labelPos === "left");
     const lx = isLeft ? (x1 - 12) : (x1 + 12);
@@ -7462,12 +7462,12 @@ function renderPhaseChart() {
         <text x="${x1.toFixed(1)}" y="${(y1 + 3.3).toFixed(1)}" text-anchor="middle"
               font-family="monospace" font-size="${isActive ? 7.6 : 6.8}" font-weight="700"
               fill="${isActive ? (isBR ? '#0a1410' : '#ffffff') : '#0a1410'}" style="pointer-events:none;">${numShort}</text>
-        <text x="${lx.toFixed(1)}" y="${(y1 + 3.5).toFixed(1)}" text-anchor="${anchor}"
+        ${isActive ? `<text x="${lx.toFixed(1)}" y="${(y1 + 3.5).toFixed(1)}" text-anchor="${anchor}"
               font-family="Helvetica Neue, sans-serif" font-size="${isActive ? 11 : 9.8}"
               font-weight="${isActive ? 800 : 600}"
               fill="${isActive ? activeFillHex : '#141619'}"
               stroke="${labelStrokeHex}" stroke-width="2.5" paint-order="stroke"
-              style="pointer-events:none;">${pd.short}</text>
+              style="pointer-events:none;">${pd.short}</text>` : ""}
       </g>
     `;
   });
