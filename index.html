@@ -7834,7 +7834,7 @@ function stepCut(delta) {
   const filtered = getFilteredCuts();
   if (!filtered.length) return;
   const idx = filtered.findIndex(c => c.id === activeCutId);
-  const nextIdx = (idx + delta + filtered.length) % filtered.length;
+  const nextIdx = idx < 0 ? (delta >= 0 ? 0 : filtered.length - 1) : (idx + delta + filtered.length) % filtered.length;
   selectCut(filtered[nextIdx].id);
 }
 
@@ -7875,7 +7875,8 @@ function handleSearch(val) {
   }
   renderRegister();
   renderPins();
-  renderDossier();
+  // Preserve the current specimen when a search has no matches; never silently select an unrelated cut.
+  if (filtered.length > 0) renderDossier();
   renderConcordance();
 }
 
@@ -7886,11 +7887,15 @@ function clearSearch() {
 }
 
 function switchMode(mode) {
-  document.querySelectorAll(".mode-btn").forEach(b => {
-    b.classList.toggle("active", b.dataset.mode === mode);
+  const target = document.getElementById("panel-" + mode);
+  if (!target) return;
+  document.querySelectorAll(".mode-btn[data-mode]").forEach(b => {
+    const active = b.dataset.mode === mode;
+    b.classList.toggle("active", active);
+    b.setAttribute("aria-pressed", String(active));
   });
   document.querySelectorAll(".mode-panel").forEach(p => {
-    p.classList.toggle("active", p.id === "panel-" + mode);
+    p.classList.toggle("active", p === target);
   });
 }
 
@@ -7922,6 +7927,14 @@ function renderConcordance() {
   ];
   const filtered = getFilteredCuts();
 
+  // Prevent a misleading full-table fallback when both comparison menus choose the same region.
+  if (pairA !== "ALL" && pairA === pairB) {
+    const other = [...document.getElementById("pairB").options].find(o => o.value !== "ALL" && o.value !== pairA);
+    if (other) {
+      document.getElementById("pairB").value = other.value;
+      return renderConcordance();
+    }
+  }
   const isPairwise = (pairA !== "ALL" && pairB !== "ALL" && pairA !== pairB);
   table.classList.toggle("pairwise-mode", isPairwise);
 
